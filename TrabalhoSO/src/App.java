@@ -6,7 +6,6 @@ public class App {
         Novato n2 = new Novato(r1);
         Veterano v2 = new Veterano(r1);
 
-
         // DISPARAR AS THREADS EM PARALELO
         n1.start(); 
         v1.start(); 
