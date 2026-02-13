@@ -7,21 +7,22 @@ public class Novato extends Entregador {
 
     @Override
     public void run () {
-        while (!entregue) { // Enquanto for diferente de verdadeiro, significa que o entregador nao conseguiu entregar <FILA>
+        while (!entregue) { // Enquanto for diferente de verdadeiro, significa que o entregador nao conseguiu entregar
             try {
             getRestaurante().pedido.acquire(); // Novato pega o pedido
             System.out.println("O Entregador Novato de ID " + getIdEntregador() + ", Pegou o pedido do Restaurante " + getIDRestaurante() + "!");
-            // Tempo de caminhada ate o pedido
-            Thread.sleep(30); // O novato tem mais energia que o veterano, entao ele corre mais rapido!
+            Thread.sleep(30); // Tempo de caminhada ate o pedido
             System.out.println("O Entregador Novato de ID " + getIdEntregador() + ", tenta pegar uma moto do Restaurante " + getIDRestaurante() + "!");
-
+            
+            // Para não bloquarmos a thread, escolhemos utilizar tryacquire
             if (getRestaurante().moto.tryAcquire()) {
                 System.out.println("Novato " + getIdEntregador() + ", Pegou a moto do Restaurante " + getIDRestaurante() + "!");
                 // Se depois disso ele conseguir pegar a moto pode entregar!
                 getRestaurante().moto.release();
                 getRestaurante().pedido.release();
                 entregue = true;
-                System.out.println("Pedido do entregador novato " + getIdEntregador() + " entregue!");
+                System.out.println("PEDIDO DO NOVATO " + getIdEntregador() + " ENTREGUE!");
+
             } else {
                 // Se ele nao conseguir pegar a moto, libera o pedido para o veterano
                 System.out.println("Novato " + getIdEntregador() + ", nao conseguiu pegar a moto do restaurante " + getIDRestaurante() + " pedido liberado pra o proximo!");
@@ -37,6 +38,7 @@ public class Novato extends Entregador {
 }
 
 /*
+Aqui era o código com deadlock
 
  try {
             System.out.println("O Entregador Novato de ID " + getIdEntregador() + ", tenta pegar um pedido do Restaurante " + getIDRestaurante() + "!");

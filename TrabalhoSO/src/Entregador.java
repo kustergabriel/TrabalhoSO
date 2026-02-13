@@ -4,7 +4,7 @@ public abstract class Entregador extends Thread {
     private Restaurante restaurante;
 
     Entregador (Restaurante restaurante) {
-        this.idEntregador = proximoId++;
+        this.idEntregador = proximoId++; // ID UNICO
         this.restaurante = restaurante;
     }
 

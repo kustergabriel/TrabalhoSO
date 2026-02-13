@@ -10,10 +10,10 @@ public class Veterano extends Entregador{
         // Usando Thread temos que usar o bloco try-catch por conta das interrupcoes
         while (!entregue) { // Enquanto for diferente de verdadeiro, significa que o entregador nao conseguiu entregar <FILA>
             try {
-            getRestaurante().moto.acquire(); // Novato pega o pedido
+            getRestaurante().moto.acquire(); // Veterano pega a moto
             System.out.println("O Entregador Veterano de ID " + getIdEntregador() + ", Pegou a moto do Restaurante " + getIDRestaurante() + "!");
             // Tempo de caminhada ate o pedido
-            Thread.sleep(120); 
+            Thread.sleep(30); 
             System.out.println("O Entregador Veterano de ID " + getIdEntregador() + ", tenta pegar um pedido do Restaurante " + getIDRestaurante() + "!");
 
             if (getRestaurante().pedido.tryAcquire()) {
@@ -22,12 +22,14 @@ public class Veterano extends Entregador{
                 getRestaurante().moto.release();
                 getRestaurante().pedido.release();
                 entregue = true;
-                System.out.println("Pedido do entregador veterano " + getIdEntregador() + " ENTREGUE!");
+                System.out.println("PEDIDO DO VETERANO " + getIdEntregador() + " ENTREGUE!");
+
             } else {
                 // Se ele nao conseguir pegar a moto, libera o pedido para o veterano
                 System.out.println("Veterano " + getIdEntregador() + ", nao conseguiu pegar o pedido do restaurante " + getIDRestaurante() + " moto liberado pra o proximo!");
                 getRestaurante().moto.release();
                 Thread.sleep(120); // Dorme para esperar um tempo, ele estava cansado
+
             }
             
             } catch (Exception e) {
@@ -41,7 +43,10 @@ public class Veterano extends Entregador{
 
 
 
-/*try {
+/*
+Aqui era o código com deadlock
+
+try {
             System.out.println("O Entregador Veterano de ID " + getIdEntregador() + ", tenta pegar uma moto do Restaurante " + getIDRestaurante() + "!");
             if (!getRestaurante().moto.tryAcquire()) {
                 System.out.println("Veterano " + getIdEntregador() + " esta aguardando conseguir uma moto do Restaurante " + getIDRestaurante() + "!");
