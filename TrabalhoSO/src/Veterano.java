@@ -1,7 +1,7 @@
 public class Veterano extends Entregador{
     boolean entregue = false;
 
-    Veterano (Restaurante restaurante) {
+    Veterano (Restaurante[] restaurante) {
         super(restaurante);
     }
 
@@ -11,25 +11,24 @@ public class Veterano extends Entregador{
         while (!entregue) { // Enquanto for diferente de verdadeiro, significa que o entregador nao conseguiu entregar <FILA>
             try {
             getRestaurante().moto.acquire(); // Veterano pega a moto
-            System.out.println("O Entregador Veterano de ID " + getIdEntregador() + ", Pegou a moto do Restaurante " + getIDRestaurante() + "!");
+            System.out.println("O Entregador [Veterano de ID " + getIdEntregador() + "], Pegou a moto do Restaurante " + getIDRestaurante() + "!");
             // Tempo de caminhada ate o pedido
             Thread.sleep(30); 
-            System.out.println("O Entregador Veterano de ID " + getIdEntregador() + ", tenta pegar um pedido do Restaurante " + getIDRestaurante() + "!");
+            System.out.println("O Entregador [Veterano de ID " + getIdEntregador() + "], tenta pegar um pedido do Restaurante " + getIDRestaurante() + "!");
 
             if (getRestaurante().pedido.tryAcquire()) {
-                System.out.println("Veterano " + getIdEntregador() + ", Pegou o pedido e a moto do Restaurante " + getIDRestaurante() + "!");
+                System.out.println("[Veterano " + getIdEntregador() + "], Pegou o pedido e a moto do Restaurante " + getIDRestaurante() + "!");
                 // Se depois disso ele conseguir pegar a moto pode entregar!
                 getRestaurante().moto.release();
                 getRestaurante().pedido.release();
                 entregue = true;
-                System.out.println("PEDIDO DO VETERANO " + getIdEntregador() + " ENTREGUE!");
+                System.out.println("PEDIDO DO [VETERANO " + getIdEntregador() + "] ENTREGUE!");
 
             } else {
                 // Se ele nao conseguir pegar a moto, libera o pedido para o veterano
-                System.out.println("Veterano " + getIdEntregador() + ", nao conseguiu pegar o pedido do restaurante " + getIDRestaurante() + " moto liberado pra o proximo!");
+                System.out.println("[Veterano " + getIdEntregador() + "], nao conseguiu pegar o pedido do restaurante " + getIDRestaurante() + " moto liberado pra o proximo!");
                 getRestaurante().moto.release();
                 Thread.sleep(120); // Dorme para esperar um tempo, ele estava cansado
-
             }
             
             } catch (Exception e) {

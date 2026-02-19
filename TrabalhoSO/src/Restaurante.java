@@ -1,13 +1,14 @@
 import java.util.concurrent.Semaphore;
 
 public class Restaurante {
-    public Semaphore moto = new Semaphore(1); 
-    public Semaphore pedido = new Semaphore(1);
-    private final int idRestaurante; // ID unico para cada restaurante instanciado
-    private static int proximoId = 1; // Campo estático para rastrear o próximo ID
+    public Semaphore moto; 
+    public Semaphore pedido;
+    private int idRestaurante; 
 
-    Restaurante () {
-        this.idRestaurante = proximoId++;
+    Restaurante (int id) {
+        this.idRestaurante = id;
+        this.pedido = new Semaphore(1); 
+        this.moto = new Semaphore(1);
     }
 
     public int getIdRestaurante() {
