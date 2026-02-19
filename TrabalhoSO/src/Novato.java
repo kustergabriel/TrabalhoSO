@@ -9,24 +9,24 @@ public class Novato extends Entregador {
     public void run () {
         while (!entregue) { // Enquanto for diferente de verdadeiro, significa que o entregador nao conseguiu entregar
             try {
-                getRestaurante().pedido.acquire(); // Novato pega o pedido
+                meuRestaurante().pedido.acquire(); // Novato pega o pedido
                 System.out.println("O Entregador [Novato de ID " + getIdEntregador() + "], Pegou o pedido do Restaurante " + getIdRestauranteAtendido() + "!");
                 Thread.sleep(30); // Tempo de caminhada ate o pedido
                 System.out.println("O Entregador [Novato de ID " + getIdEntregador() + "], tenta pegar uma moto do Restaurante " + getIdRestauranteAtendido() + "!");
                 
                 // Para não bloquarmos a thread, escolhemos utilizar tryacquire
-                if (getRestaurante().moto.tryAcquire()) {
+                if (meuRestaurante().moto.tryAcquire()) {
                     System.out.println("[Novato " + getIdEntregador() + "], Pegou a moto do Restaurante " + getIdRestauranteAtendido() + "!");
                     // Se depois disso ele conseguir pegar a moto pode entregar!
-                    getRestaurante().moto.release();
-                    getRestaurante().pedido.release();
+                    meuRestaurante().moto.release();
+                    meuRestaurante().pedido.release();
                     entregue = true;
                     System.out.println("PEDIDO DO [NOVATO " + getIdEntregador() + "] ENTREGUE!");
 
                 } else {
                     // Se ele nao conseguir pegar a moto, libera o pedido para o veterano
                     System.out.println("[Novato " + getIdEntregador() + "], nao conseguiu pegar a moto do restaurante " + getIdRestauranteAtendido() + " pedido liberado pra o proximo!");
-                    getRestaurante().pedido.release();
+                    meuRestaurante().pedido.release();
                     Thread.sleep(120); // Dorme para esperar um tempo, ele estava cansado
                 }
 

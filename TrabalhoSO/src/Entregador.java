@@ -8,7 +8,7 @@ public abstract class Entregador extends Thread {
         this.idEntregador = proximoId++; 
         this.restaurantes = restaurante;
         
-        java.util.Random random = new java.util.Random(); // Colocar um restaurante random em cada entregador
+        java.util.Random random = new java.util.Random(); // "emprega" um entregador para um restaurante
         this.indiceSorteado = random.nextInt(restaurantes.length);
     }
 
@@ -22,7 +22,7 @@ public abstract class Entregador extends Thread {
         return restaurantes[indiceSorteado].getIdRestaurante();    
     }
 
-    public Restaurante getRestaurante() {
+    public Restaurante meuRestaurante() {
         return restaurantes[indiceSorteado];
     }
     
